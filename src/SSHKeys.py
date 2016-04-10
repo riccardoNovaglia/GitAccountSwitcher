@@ -15,5 +15,3 @@ def get_ssh_config(alias):
            "   HostName github.com\n" \
            "   User git\n" \
            "   IdentityFile ~/.ssh/{}_rsa".format(alias, alias, alias)
-
-

@@ -1,10 +1,13 @@
+from getpass import getpass
+import os
+
 from SSHKeys import *
 from Files import *
 from GithubHelper import GithubHelper
-from getpass import getpass
 
-path = "./fakessh/"
-ssh_config_file_path = path + "fake_config"
+test_data_path = os.path.dirname(os.path.realpath(__file__)) + "/../test_data/"
+print test_data_path
+ssh_config_file_path = test_data_path + "fake_config"
 private_key_filename_template = "{}/{}_rsa"
 public_key_filename_template = "{}/{}_rsa.pub"
 
@@ -27,8 +30,8 @@ username, email, alias = prompt_user()
 private_key, public_key = get_ssh_key_pair()
 public_key = append_email_to(public_key)
 
-write_to_file(private_key_filename_template.format(path, alias), private_key)
-write_to_file(public_key_filename_template.format(path, alias), public_key)
+write_to_file(private_key_filename_template.format(test_data_path, alias), private_key)
+write_to_file(public_key_filename_template.format(test_data_path, alias), public_key)
 
 append_to_file(ssh_config_file_path, get_ssh_config(alias))
 
@@ -36,7 +39,7 @@ github_password = getpass('Please provide your github password for username {}'.
 github = GithubHelper(username, github_password)
 github.upload_key(alias, public_key)
 
-# Upload to github (needs username and pass) ?prompt for github pass
+print "Public key for user {} uploaded successfully with alias {}".format(username, alias)
 
 
 # set account for current dir (git config user.name and user.mail to provided)
