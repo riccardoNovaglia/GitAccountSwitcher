@@ -1,40 +1,42 @@
-from Crypto.PublicKey import RSA
-from basicauth import encode
+from SSHKeys import *
+from Files import *
+from GithubHelper import GithubHelper
+from getpass import getpass
 
 path = "./fakessh/"
-sshfile = path + "fake_config"
+ssh_config_file_path = path + "fake_config"
+private_key_filename_template = "{}/{}_rsa"
+public_key_filename_template = "{}/{}_rsa.pub"
 
-# username = raw_input("Please input your username\n")
-email = raw_input("Please input your email\n")
-# TODO: validate
-alias = raw_input("Please input an alias for this git account\n")
+
+def prompt_user():
+    username_input = raw_input("Please input your username\n")
+    email_input = raw_input("Please input your email\n")
+    # TODO: validate
+    alias_input = raw_input("Please input an alias for this git account\n")
+    return username_input, email_input, alias_input
+
+
+def append_email_to(pubkey):
+    return pubkey.exportKey('OpenSSH') + ' {}'.format(email)
+
+
+username, email, alias = prompt_user()
 
 # generate ssh key
-key = RSA.generate(2048).publickey()
+private_key, public_key = get_ssh_key_pair()
+public_key = append_email_to(public_key)
 
-with open("{}/{}".format(path, alias), 'w') as file_stream:
-    private_key = key.exportKey('PEM')
-    file_stream.write(private_key)
+write_to_file(private_key_filename_template.format(path, alias), private_key)
+write_to_file(public_key_filename_template.format(path, alias), public_key)
 
-pubkey = key.publickey()
+append_to_file(ssh_config_file_path, get_ssh_config(alias))
 
-with open("{}/{}.pub".format(path, alias), 'w') as file_stream:
-    public_key = pubkey.exportKey('OpenSSH') + ' {}'.format(email)
-    file_stream.write(public_key)
-
-
-# add to ssh_config using alias
-with open(sshfile, "w") as file_stream:
-    file_stream.write(
-        "Host github-{}\n"
-        "   HostName github.com\n"
-        "   User git\n"
-        "   IdentityFile {}".format(alias, alias)
-    )
+github_password = getpass('Please provide your github password for username {}'.format(username))
+github = GithubHelper(username, github_password)
+github.upload_key(alias, public_key)
 
 # Upload to github (needs username and pass) ?prompt for github pass
-github
 
-def post():
-    pass
+
 # set account for current dir (git config user.name and user.mail to provided)
