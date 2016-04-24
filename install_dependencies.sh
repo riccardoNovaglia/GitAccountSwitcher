@@ -1,1 +1,1 @@
-pip install crypto PyGithub
+pip install pycrypto PyGithub mock
