@@ -1,15 +1,15 @@
-from unittest import TestCase
+import unittest
 
 from SSHKeys import get_ssh_key_pair
 from github import AuthenticatedUser, BadCredentialsException, Github, GithubException
 
 username = ''
 account_password = ''
-if len(username) == 0 or len(account_password) == 0:
-    raise Exception('You should set username and password before running these tests!')
 
 
-class LearningGithub(TestCase):
+@unittest.skipIf(username == account_password == '', 'Skipping tests due to missing credentials')
+class LearningGithub(unittest.TestCase):
+
     def test_creates_instance(self):
         github_object = Github('someUsername', 'somePassword')
 
