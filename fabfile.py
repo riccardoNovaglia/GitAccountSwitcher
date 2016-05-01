@@ -13,3 +13,7 @@ def setup_env(name='local_env'):
     print '-----------------------------------------\n\n' \
           'Virtual environment created at ./{0}\n' \
           'To activate use "source {0}/bin/activate"'.format(name)
+
+
+def unit_test(args=''):
+    local('python -m unittest discover {}'.format(args))
