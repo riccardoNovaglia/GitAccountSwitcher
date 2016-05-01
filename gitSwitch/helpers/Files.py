@@ -1,5 +1,5 @@
 def write_to_file(file_path, content):
-    with open(file_path, 'w') as file_stream:
+    with open(file_path, 'w+') as file_stream:
         file_stream.write(content)
 
 
