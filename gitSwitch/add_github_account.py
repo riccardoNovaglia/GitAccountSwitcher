@@ -1,9 +1,9 @@
 from getpass import getpass
-import os
 
-from SSHKeys import *
+import os
 from Files import *
-from GithubHelper import GithubHelper
+from SSHKeys import *
+from gitSwitch.helpers.GithubHelper import GithubHelper
 
 test_data_path = os.path.dirname(os.path.realpath(__file__)) + "/../test_data/"
 print test_data_path

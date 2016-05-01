@@ -1,6 +1,6 @@
 import unittest
 
-from SSHKeys import get_ssh_key_pair
+from gitSwitch.helpers.SSHKeys import get_ssh_key_pair
 from github import AuthenticatedUser, BadCredentialsException, Github, GithubException
 
 username = ''

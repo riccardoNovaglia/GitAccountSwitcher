@@ -1,12 +1,12 @@
 from unittest import TestCase
 
-from GithubHelper import GithubHelper, DuplicateKeyException, KeyFormatException
+from gitSwitch.helpers.GithubHelper import GithubHelper, DuplicateKeyException, KeyFormatException
 from github import GithubException, BadCredentialsException
 from mock import patch
 
 
 class TestGithubHelper(TestCase):
-    @patch('GithubHelper.Github')
+    @patch('gitSwitch.helpers.GithubHelper.Github')
     def test_constructor_throws_exception_if_bad_credentials(self, github_mock):
         # given
         github_mock.return_value = MockGithub(login_exception_class=BadCredentialsException)
@@ -19,7 +19,7 @@ class TestGithubHelper(TestCase):
             # then
             self.assertIsInstance(exception, BadCredentialsException)
 
-    @patch('GithubHelper.Github')
+    @patch('gitSwitch.helpers.GithubHelper.Github')
     def test_uploads_key(self, github_mock):
         # given
         github_mock.return_value = MockGithub()
@@ -28,7 +28,7 @@ class TestGithubHelper(TestCase):
         # when
         github_helper.upload_key('someAlias', 'someKey')
 
-    @patch('GithubHelper.Github')
+    @patch('gitSwitch.helpers.GithubHelper.Github')
     def test_uploads_key_raises_duplicate_key_error(self, github_mock):
         # given
         key_alias = 'someDuplicateAlias'
@@ -43,7 +43,7 @@ class TestGithubHelper(TestCase):
         except DuplicateKeyException as exception:
             self.assertEqual(exception.message, 'Duplicate key found for alias <{}>'.format(key_alias))
 
-    @patch('GithubHelper.Github')
+    @patch('gitSwitch.helpers.GithubHelper.Github')
     def test_uploads_key_raises_incorrect_key_format(self, github_mock):
         # given
         key_alias = 'someAlias'
