@@ -3,7 +3,7 @@ from getpass import getpass
 import os
 from helpers.Files import *
 from helpers.SSHKeys import *
-from gitSwitch.helpers.GithubHelper import GithubHelper
+from helpers.GithubHelper import GithubHelper
 
 test_data_path = os.path.dirname(os.path.realpath(__file__)) + "/../test_data/"
 print test_data_path
