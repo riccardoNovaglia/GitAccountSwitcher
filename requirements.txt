@@ -1,0 +1,4 @@
+Fabric==1.11.1
+mock==2.0.0
+pycrypto==2.6.1
+PyGithub==1.26.0
