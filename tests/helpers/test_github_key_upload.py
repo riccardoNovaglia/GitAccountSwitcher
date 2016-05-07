@@ -6,7 +6,7 @@ from github import GithubException, BadCredentialsException
 from mock import patch
 
 
-@patch('gitSwitch.helpers.github_key_upload.getpass')
+@patch('gitSwitch.helpers.github_key_upload.get_password')
 class TestGithubHelper(TestCase):
     @patch('gitSwitch.helpers.github_key_upload.Github')
     def test_uploads_key(self, github_mock, pass_mock):

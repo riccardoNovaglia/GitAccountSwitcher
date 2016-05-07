@@ -1,6 +1,5 @@
-from getpass import getpass
-
 from github import Github, GithubException, BadCredentialsException
+from gitSwitch.helpers.user_input import get_password
 
 
 def upload_github_key_for_username(username, alias, key):
@@ -10,8 +9,7 @@ def upload_github_key_for_username(username, alias, key):
 
 
 def _log_into_github(username):
-    github_password = getpass('Please provide your github password for username {}'.format(username))
-    github_instance = Github(username, password=github_password)
+    github_instance = Github(username, password=(get_password()))
     return github_instance.get_user()
 
 
