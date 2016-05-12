@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from gitSwitch.helpers.ssh_keys import create_key_pair
+from gitSwitch.helpers.ssh_keys import create_key_pair, SSHKeysCreationException
 from mock import patch, MagicMock, call, mock_open
 
 SOME_PRIVATE_KEY = 'some private key'
@@ -8,8 +8,10 @@ SOME_PUBLIC_KEY = 'some public key'
 
 
 class TestSSHKeys(TestCase):
+    @patch('gitSwitch.helpers.ssh_keys.exists')
     @patch('gitSwitch.helpers.ssh_keys.generate')
-    def test_generate_private_key_creates_file(self, mock_generate):
+    def test_generate_private_key_creates_file(self, mock_generate, mock_exists):
+        mock_exists.return_value = True
         m = mock_open()
         with patch('gitSwitch.helpers.ssh_keys.open', m):
             self.some_private_key(mock_generate)
@@ -22,6 +24,16 @@ class TestSSHKeys(TestCase):
             self.assertIn(call('some_path/some_alias_rsa.pub', 'w+'), m.mock_calls)
             self.assertIn(call().write(SOME_PRIVATE_KEY), m.mock_calls)
             self.assertIn(call().write(SOME_PUBLIC_KEY), m.mock_calls)
+
+    @patch('gitSwitch.helpers.ssh_keys.exists')
+    def test_throws_an_exception_if_ssh_dir_is_not_found(self, mock_esists):
+        mock_esists.return_value = False
+
+        try:
+            create_key_pair('some_path/', 'some_alias')
+            self.fail('Exception expected')
+        except SSHKeysCreationException as e:
+            self.assertEqual(e.message, 'Could not create keys: directory [some_path/] not found')
 
     def some_private_key(self, mock_generate):
         mock_key = MagicMock()
