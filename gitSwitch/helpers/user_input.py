@@ -2,11 +2,11 @@ from getpass import getpass
 
 
 def get_email():
-    return UserInput.get_value_for('email', 'Please your Github email')
+    return UserInput.get_value_for('email', 'Please enter your Github email')
 
 
 def get_username():
-    return UserInput.get_value_for('name', 'Please your Github username')
+    return UserInput.get_value_for('name', 'Please enter your Github username')
 
 
 def get_account_alias():
@@ -14,7 +14,7 @@ def get_account_alias():
 
 
 def get_password():
-    return UserInput.get_sensitive_value_for('password', 'Please your Github password')
+    return UserInput.get_sensitive_value_for('password', 'Please enter your Github password')
 
 
 class UserInput:
