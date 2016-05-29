@@ -1,19 +1,53 @@
+from functools import wraps
+
 from fabric.api import local
+from fabric.api import task
 from fabric.context_managers import prefix
+from os.path import exists
 
 
-def setup_env(name='local_env'):
-    print '--- Creating virtual environment at ./{}'.format(name)
-    local('virtualenv {}'.format(name))
-
-    with prefix('. {}/bin/activate'.format(name)):
-        print '--- Virtual environment created, installing dependencies from requirements.txt'
-        local('pip install -r requirements.txt')
+@task
+def setup_env(env='local_env'):
+    create_virtual_environment(env)
+    install_dependencies(env=env)
 
     print '-----------------------------------------\n\n' \
           'Virtual environment created at ./{0}\n' \
-          'To activate use ". {0}/bin/activate"'.format(name)
+          'To activate use ". {0}/bin/activate"'.format(env)
 
 
-def unit_test(args=''):
-    local('python -m unittest discover {}'.format(args))
+def create_virtual_environment(env):
+    print '--- Creating virtual environment at ./{}'.format(env)
+    local('virtualenv {}'.format(env))
+
+
+def activate_env(fn):
+    @wraps(fn)
+    def with_env_activated(*args, **kwargs):
+        # print(args, kwargs)
+        env = kwargs['env']
+        if not exists(env):
+            setup_env(env)
+        with prefix('. {}/bin/activate'.format(env)):
+            return fn(env)
+
+    return with_env_activated
+
+
+@activate_env
+def install_dependencies(env):
+    print('--- Installing dependencies from requirements.txt in {}'.format(env))
+    local('pip install -r requirements.txt')
+
+
+@task
+def test(only='unit,functional', env='local_env'):
+    if 'unit' in only:
+        run_unit_tests(env=env)
+    if 'functional' in only:
+        print "running fts"
+
+
+@activate_env
+def run_unit_tests(env='local_env'):
+    local('python -m unittest discover -s ./tests/unit')
