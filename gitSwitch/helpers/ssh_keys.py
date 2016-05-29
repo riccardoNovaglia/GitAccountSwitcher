@@ -1,5 +1,6 @@
 from Crypto.PublicKey.RSA import generate
 from os.path import exists
+from os import makedirs
 
 
 def create_key_pair(files_destination_path, keys_alias):
@@ -15,7 +16,7 @@ def create_key_pair(files_destination_path, keys_alias):
 
 def _verify_destination_path(files_destination_path):
     if not exists(files_destination_path):
-        raise SSHKeysCreationException(files_destination_path)
+        makedirs(files_destination_path)
 
 
 def _create_public_key(files_destination_path, key, keys_alias):
@@ -30,8 +31,3 @@ def _create_private_key(files_destination_path, key, keys_alias):
     with open(files_destination_path + keys_alias + '_rsa', 'w+') as file_stream:
         file_stream.write(private_key)
     return private_key
-
-
-class SSHKeysCreationException(Exception):
-    def __init__(self, files_destination_path):
-        self.message = 'Could not create keys: directory [{}] not found'.format(files_destination_path)
