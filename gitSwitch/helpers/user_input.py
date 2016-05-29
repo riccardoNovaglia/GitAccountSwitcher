@@ -2,19 +2,19 @@ from getpass import getpass
 
 
 def get_email():
-    return UserInput.get_value_for('email', 'Please enter your Github email')
+    return UserInput.get_value_for('email', 'Please enter your Github email\n')
 
 
 def get_username():
-    return UserInput.get_value_for('name', 'Please enter your Github username')
+    return UserInput.get_value_for('name', 'Please enter your Github username\n')
 
 
 def get_account_alias():
-    return UserInput.get_value_for('alias', 'Please enter an alias for this account')
+    return UserInput.get_value_for('alias', 'Please enter an alias for this account\n')
 
 
 def get_password():
-    return UserInput.get_sensitive_value_for('password', 'Please enter your Github password')
+    return UserInput.get_sensitive_value_for('password', 'Please enter your Github password\n')
 
 
 class UserInput:

@@ -3,10 +3,10 @@ from unittest import TestCase
 from gitSwitch.helpers.user_input import get_email, UserInput, get_username, get_password, get_account_alias
 from mock import patch
 
-EMAIL_PROMPT = 'Please enter your Github email'
-USERNAME_PROMPT = 'Please enter your Github username'
-ACCOUNT_ALIAS_PROMPT = 'Please enter an alias for this account'
-PASSWORD_PROMPT = 'Please enter your Github password'
+EMAIL_PROMPT = 'Please enter your Github email\n'
+USERNAME_PROMPT = 'Please enter your Github username\n'
+ACCOUNT_ALIAS_PROMPT = 'Please enter an alias for this account\n'
+PASSWORD_PROMPT = 'Please enter your Github password\n'
 SOME_VALUE = 'something'
 
 
