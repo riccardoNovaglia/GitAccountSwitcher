@@ -45,9 +45,20 @@ def test(only='unit,functional', env='local_env'):
     if 'unit' in only:
         run_unit_tests(env=env)
     if 'functional' in only:
-        print "running fts"
+        local('./ft/run_fts.sh')
+
+
+@task
+def docker_ft(env='local_env'):
+    ft(env=env)
+
+
+@activate_env
+def ft(env='local_env'):
+    print local('python -m unittest discover -s ./ft/add_account')
 
 
 @activate_env
 def run_unit_tests(env='local_env'):
-    local('python -m unittest discover -s ./tests/unit')
+    print 'Running unit tests..'
+    print local('python -m unittest discover -s ./tests/unit')
