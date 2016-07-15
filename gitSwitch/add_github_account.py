@@ -1,3 +1,4 @@
+from helpers.ssh_config import update_ssh_config
 from helpers.ssh_keys import create_key_pair
 from helpers.upload_github_key import upload_github_key
 from os.path import expanduser
@@ -6,7 +7,7 @@ from os.path import expanduser
 def add_github_account(email, username, password, alias):
     private_key, public_key = create_key_pair(expanduser('~/.ssh/'), alias)
 
-    # TODO: write_to_file(ssh_config_file_path, get_ssh_config(user_input.get_account_alias()), 'a+')
+    update_ssh_config(expanduser('~/.ssh/config'), alias, username)
 
     upload_github_key(username, password, alias, public_key)
 
