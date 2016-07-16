@@ -21,4 +21,4 @@ RUN fab setup_env
 COPY . $GIT_SWITCH_PATH
 
 ENTRYPOINT ["fab"]
-CMD ["docker_ft"]
+CMD ["docker_tests"]

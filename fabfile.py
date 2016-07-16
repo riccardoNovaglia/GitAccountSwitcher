@@ -41,11 +41,20 @@ def install_dependencies(env):
 
 
 @task
-def test(only='unit,functional', env='local_env'):
+def test(only='unit integration functional', env='local_env'):
     if 'unit' in only:
         run_unit_tests(env=env)
+    if 'integration' in only or 'functional' in only:
+        # need to pass only down to sh -> docker as command -> fab into docker to decide whether to run ft or int
+        local('./docker_tests/run_docker_tests.sh {}'.format(only))
+
+
+@task
+def docker_tests(only='integration functional', env='local_env'):
+    if 'integration' in only:
+        integration(env=env)
     if 'functional' in only:
-        local('./ft/run_fts.sh')
+        ft(env=env)
 
 
 @task
@@ -53,9 +62,21 @@ def docker_ft(env='local_env'):
     ft(env=env)
 
 
+@task
+def docker_integration(env='local_env'):
+    integration(env=env)
+
+
 @activate_env
 def ft(env='local_env'):
-    print local('python -m unittest discover -s ./ft/add_account')
+    print 'Running functional tests..'
+    print local('python -m unittest discover -s ./docker_tests/functional')
+
+
+@activate_env
+def integration(env='local_env'):
+    print 'Running integration tests..'
+    print local('python -m unittest discover -s ./docker_tests/integration')
 
 
 @activate_env
