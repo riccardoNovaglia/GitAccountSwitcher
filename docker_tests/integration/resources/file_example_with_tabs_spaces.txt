@@ -1,0 +1,5 @@
+line with spaces at the end
+        line with tabs and spaces
+ok line
+
+blank line above

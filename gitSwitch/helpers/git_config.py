@@ -2,14 +2,17 @@ import ConfigParser
 
 from StringIO import StringIO
 
-
 # TODO: what happens when the repo is not configured already?
+from util import files_IO
+
+
 class GitConfig:
     def __init__(self, config_filepath):
         self.config_filepath = config_filepath
         self.config = ConfigParser.ConfigParser()
 
-        self.config.readfp(self._file_object(config_filepath))
+        # self.config.readfp(self._file_object(config_filepath))
+        self.config.readfp(files_IO.get_file_object_like(config_filepath))
 
     def update_git_config(self, username, email):
         self._set_user_properties(email, username)
